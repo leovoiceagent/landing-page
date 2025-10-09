@@ -36,7 +36,7 @@ const ChatWidget: React.FC = () => {
       console.log('Setting up ChatWidgetConfig for SmallBizMarketing...');
       (window as any).ChatWidgetConfig = {
         webhook: {
-          url: 'https://loanliu.app.n8n.cloud/webhook/c728ea6a-ad76-407d-9191-b7eeeaf524c1',
+          url: 'https://leovoiceagent.app.n8n.cloud/webhook/retell',
           route: 'general'
         },
         branding: {
@@ -187,7 +187,7 @@ const ChatWidget: React.FC = () => {
       const testWebhookConnection = async () => {
         try {
           console.log('Testing SmallBizMarketing webhook connection...');
-          const response = await fetch('https://loanliu.app.n8n.cloud/webhook/c728ea6a-ad76-407d-9191-b7eeeaf524c1', {
+          const response = await fetch('https://leovoiceagent.app.n8n.cloud/webhook/retell', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
