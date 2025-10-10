@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { sendNewUserNotification } from './email';
 import type { User, AuthError } from '@supabase/supabase-js';
 
 // Types for authentication
@@ -107,6 +108,11 @@ export const signUp = async ({ email, password, fullName }: SignUpData): Promise
     if (!data.user) {
       return { success: false, error: 'Failed to create account. Please try again.' };
     }
+
+    // Send notification email to admin (non-blocking)
+    sendNewUserNotification(data.user.email || email, fullName).catch(error => {
+      console.error('Failed to send notification email, but user was created successfully:', error);
+    });
 
     return { 
       success: true, 
