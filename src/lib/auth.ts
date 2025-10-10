@@ -248,6 +248,41 @@ export const getCurrentUser = async (): Promise<User | null> => {
 };
 
 /**
+ * Send password reset email
+ */
+export const resetPassword = async (email: string): Promise<AuthResponse> => {
+  try {
+    // Validate input data
+    if (!email) {
+      return { success: false, error: 'Email address is required' };
+    }
+
+    if (!validateEmail(email)) {
+      return { success: false, error: 'Please enter a valid email address' };
+    }
+
+    // Send password reset email
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) {
+      console.error('Password reset error:', error);
+      return { success: false, error: getAuthErrorMessage(error) };
+    }
+
+    return { success: true };
+
+  } catch (error) {
+    console.error('Unexpected password reset error:', error);
+    return { 
+      success: false, 
+      error: 'An unexpected error occurred while sending reset email. Please try again.' 
+    };
+  }
+};
+
+/**
  * Listen to authentication state changes
  */
 export const onAuthStateChange = (callback: (user: User | null) => void) => {

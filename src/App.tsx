@@ -10,7 +10,11 @@ import Footer from './components/Footer';
 import Login from './components/Login';
 import Register from './components/Register';
 import AuthCallback from './components/AuthCallback';
+import ResetPassword from './components/ResetPassword';
 import VoiceDemo from './components/VoiceDemo';
+import ProtectedRoute from './components/ProtectedRoute';
+import AppDashboard from './components/AppDashboard';
+import AdminDashboard from './components/AdminDashboard';
 import { RETELL_CONFIG } from './config/retell';
 
 function App() {
@@ -41,6 +45,17 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/app" element={
+            <ProtectedRoute>
+              <AppDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
         </Routes>
         <Footer />
         
