@@ -27,9 +27,9 @@ const AuthCallback: React.FC = () => {
 
         if (data.session) {
           setStatus('success');
-          // Redirect to dashboard or home page after successful authentication
+          // Redirect to app dashboard after successful authentication
           setTimeout(() => {
-            navigate('/', { replace: true });
+            navigate('/app', { replace: true });
           }, 2000);
         } else {
           setStatus('error');
