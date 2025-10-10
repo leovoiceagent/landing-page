@@ -15,25 +15,41 @@ const AuthCallback: React.FC = () => {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
+        // Wait a moment for Supabase to process the URL hash
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         // Get the session from the URL hash
         const { data, error } = await supabase.auth.getSession();
 
         if (error) {
           console.error('Auth callback error:', error);
           setStatus('error');
-          setErrorMessage('Authentication failed. Please try again.');
+          setErrorMessage(`Authentication failed: ${error.message}`);
           return;
         }
 
         if (data.session) {
+          console.log('Session established successfully:', data.session.user.email);
           setStatus('success');
           // Redirect to app dashboard after successful authentication
           setTimeout(() => {
             navigate('/app', { replace: true });
-          }, 2000);
+          }, 1500);
         } else {
-          setStatus('error');
-          setErrorMessage('No session found. Please try signing in again.');
+          // Try to get user to see if session exists
+          const { data: userData, error: userError } = await supabase.auth.getUser();
+          
+          if (userData.user) {
+            console.log('User found:', userData.user.email);
+            setStatus('success');
+            setTimeout(() => {
+              navigate('/app', { replace: true });
+            }, 1500);
+          } else {
+            console.error('No session or user found:', userError);
+            setStatus('error');
+            setErrorMessage('No session found. Please try signing in again.');
+          }
         }
       } catch (error) {
         console.error('Unexpected auth callback error:', error);
