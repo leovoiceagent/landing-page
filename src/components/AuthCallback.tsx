@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 /**
  * OAuth Callback Component
  * Handles the redirect after Google OAuth authentication
+ * Processes authentication tokens and redirects to dashboard
  */
 const AuthCallback: React.FC = () => {
   const navigate = useNavigate();
