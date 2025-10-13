@@ -1,0 +1,26 @@
+{
+  "name": "book_with_cal",
+  "call": {
+    "call_id": "test_call_12345",
+    "agent_id": "agent_159351880228f7051849abadc3",
+    "user_id": "user_123",
+    "start_timestamp": "2025-01-13T20:00:00Z",
+    "end_timestamp": "2025-01-13T20:15:00Z"
+  },
+  "args": {
+    "eventTypeId": 2922364,
+    "attendee": {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "timeZone": "America/New_York",
+      "phoneNumber": "+1234567890"
+    },
+    "startIsoUtc": "2025-01-15T18:00:00Z",
+    "lengthInMinutes": 30,
+    "metadata": {
+      "source": "retell_voice_agent",
+      "property_tour": true,
+      "lead_source": "voice_call"
+    }
+  }
+}
