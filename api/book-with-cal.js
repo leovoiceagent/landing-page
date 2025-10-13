@@ -1,7 +1,7 @@
 // Netlify Serverless Function for Retell + Cal.com booking
 // This function will be available at: https://your-domain.netlify.app/.netlify/functions/book-with-cal
 
-exports.handler = async (event, context) => {
+export const handler = async (event, context) => {
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
