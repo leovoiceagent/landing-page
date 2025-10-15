@@ -155,3 +155,5 @@ junit.xml
 # Deployment artifacts
 deploy/
 release/
+# Local Netlify folder
+.netlify

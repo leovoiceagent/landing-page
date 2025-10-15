@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Edit, Pause, Play, Shield, User, Building2, Mail, Crown } from 'lucide-react';
+import { Plus, Search, Edit, Pause, Play, Shield, User, Building2, Crown } from 'lucide-react';
 import { 
   getAdminUsers, 
   createAdminUser, 
@@ -136,7 +136,6 @@ const AdminUsersManagement: React.FC = () => {
   const filteredAdminUsers = adminUsers.filter(admin => {
     const matchesSearch = 
       admin.user_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      admin.user_email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       admin.organization_name?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesOrg = selectedOrg === 'all' || admin.organization_id === selectedOrg;
     return matchesSearch && matchesOrg;
@@ -366,10 +365,6 @@ const AdminUsersManagement: React.FC = () => {
                         </div>
                         <div className="flex items-center space-x-4 mt-2 text-sm text-[#64748B]">
                           <div className="flex items-center space-x-1">
-                            <Mail className="w-4 h-4" />
-                            <span>{admin.user_email}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
                             <Building2 className="w-4 h-4" />
                             <span>{admin.organization_name}</span>
                           </div>
@@ -434,7 +429,7 @@ const AdminUsersManagement: React.FC = () => {
                     <option value="">Select user</option>
                     {availableUsers.map(user => (
                       <option key={user.user_id} value={user.user_id}>
-                        {user.first_name} {user.last_name} ({user.email}) - {user.organization_name}
+                        {user.first_name} {user.last_name} - {user.organization_name}
                       </option>
                     ))}
                   </select>

@@ -4,6 +4,7 @@ import { getCurrentUser, signOut } from '../lib/auth';
 import { getCurrentUserAdminPermissions } from '../lib/admin';
 import { getUserProperties, getRecentActivity, getDashboardStats } from '../lib/dashboard';
 import type { Property, ActivityItem, DashboardStats } from '../lib/dashboard';
+import CallVolumeChart from './CallVolumeChart';
 import { User, LogOut, Home, Settings, HelpCircle, Shield } from 'lucide-react';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 
@@ -263,25 +264,7 @@ const AppDashboard: React.FC = () => {
           </div>
 
           {/* Chart Section */}
-          <div className="bg-gray-50 rounded-xl p-6 mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold text-[#1E293B]">Call Volume Trends</h3>
-              <div className="flex space-x-2">
-                <button className="px-3 py-1 text-sm bg-[#38BDF8] text-white rounded-lg">7D</button>
-                <button className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-lg">30D</button>
-                <button className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-lg">90D</button>
-              </div>
-            </div>
-            <div className="h-64 bg-white rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-              <div className="text-center">
-                <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                <p className="text-gray-500">Chart will be implemented here</p>
-                <p className="text-sm text-gray-400">Call volume over time</p>
-              </div>
-            </div>
-          </div>
+          <CallVolumeChart className="mb-8" />
 
           {/* Properties and Recent Activity Grid */}
           <div className="grid lg:grid-cols-2 gap-8">
