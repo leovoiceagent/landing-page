@@ -227,12 +227,12 @@ const UsersManagement: React.FC = () => {
                           const formData = new FormData(e.currentTarget);
                           const firstName = formData.get('first_name') as string;
                           const lastName = formData.get('last_name') as string;
-                          const email = formData.get('email') as string;
                           const organizationId = formData.get('organization_id') as string;
                           const isActive = formData.get('is_active') === 'on';
                           
-                          if (firstName.trim() && lastName.trim() && email.trim() && organizationId) {
-                            handleUpdate(user.id, firstName.trim(), lastName.trim(), email.trim(), organizationId, isActive);
+                          if (firstName.trim() && lastName.trim() && organizationId) {
+                            // Email is read-only, so we don't pass it to handleUpdate
+                            handleUpdate(user.id, firstName.trim(), lastName.trim(), user.email, organizationId, isActive);
                           }
                         }}
                         className="space-y-3"
@@ -255,14 +255,20 @@ const UsersManagement: React.FC = () => {
                             placeholder="Last name"
                             required
                           />
-                          <input
-                            type="email"
-                            name="email"
-                            defaultValue={user.email}
-                            className="px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-[#38BDF8] focus:border-transparent"
-                            placeholder="Email address"
-                            required
-                          />
+                          <div>
+                            <input
+                              type="email"
+                              name="email"
+                              value={user.email}
+                              className="px-3 py-2 border border-gray-300 rounded bg-gray-100 text-gray-600 cursor-not-allowed"
+                              placeholder="Email address"
+                              disabled
+                              readOnly
+                            />
+                            <div className="mt-1 mb-2 text-xs text-gray-500">
+                              Email cannot be changed for security
+                            </div>
+                          </div>
                           <select
                             name="organization_id"
                             defaultValue={user.organization_id}

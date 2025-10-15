@@ -46,6 +46,12 @@ export interface DashboardStats {
   active_properties: number;
 }
 
+export interface CallVolumeData {
+  date: string;
+  calls: number;
+  tours: number;
+}
+
 /**
  * Get the current user's organization ID from their user profile
  */
@@ -258,7 +264,17 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
       };
     }
 
-    // Get all calls for the organization
+    // Get accurate call count using count query
+    const { count: totalCalls, error: countError } = await supabase
+      .from('call_records')
+      .select('*', { count: 'exact', head: true })
+      .eq('organization_id', organizationId);
+
+    if (countError) {
+      console.error('Error fetching call count for stats:', countError);
+    }
+
+    // Get all calls for the organization for other calculations
     const { data: calls, error: callsError } = await supabase
       .from('call_records')
       .select('tour_scheduled_for, duration_ms')
@@ -268,9 +284,9 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
       console.error('Error fetching calls for stats:', callsError);
     }
 
-    const totalCalls = calls?.length || 0;
+    const actualTotalCalls = totalCalls || 0;
     const toursScheduled = calls?.filter(c => c.tour_scheduled_for !== null && c.tour_scheduled_for !== '').length || 0;
-    const tourRate = totalCalls > 0 ? (toursScheduled / totalCalls) * 100 : 0;
+    const tourRate = actualTotalCalls > 0 ? (toursScheduled / actualTotalCalls) * 100 : 0;
 
     // Calculate average call duration
     const validDurations = calls?.filter(c => c.duration_ms && c.duration_ms > 0) || [];
@@ -296,7 +312,7 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
     const activeProperties = properties?.length || 0;
 
     return {
-      total_calls: totalCalls,
+      total_calls: actualTotalCalls,
       tour_rate: Math.round(tourRate * 10) / 10, // Round to 1 decimal
       avg_call_duration: avgCallDuration,
       active_properties: activeProperties
@@ -309,6 +325,139 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
       avg_call_duration: '0m 0s',
       active_properties: 0
     };
+  }
+};
+
+/**
+ * Debug function to check call record counts
+ */
+export const debugCallCounts = async (): Promise<{
+  totalRecords: number;
+  organizationRecords: number;
+  dateRangeRecords: { [key: string]: number };
+}> => {
+  try {
+    const organizationId = await getCurrentUserOrganizationId();
+    
+    // Get total records in database
+    const { count: totalCount } = await supabase
+      .from('call_records')
+      .select('*', { count: 'exact', head: true });
+
+    // Get records for this organization
+    const { count: orgCount } = await supabase
+      .from('call_records')
+      .select('*', { count: 'exact', head: true })
+      .eq('organization_id', organizationId);
+
+    // Get date ranges
+    const now = new Date();
+    const ranges = {
+      '7days': new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000),
+      '30days': new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000),
+      '90days': new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000),
+      'allTime': new Date('2020-01-01')
+    };
+
+    const dateRangeCounts: { [key: string]: number } = {};
+    
+    for (const [range, startDate] of Object.entries(ranges)) {
+      const { count } = await supabase
+        .from('call_records')
+        .select('*', { count: 'exact', head: true })
+        .eq('organization_id', organizationId)
+        .gte('start_timestamp', startDate.toISOString())
+        .lte('start_timestamp', now.toISOString());
+      
+      dateRangeCounts[range] = count || 0;
+    }
+
+    return {
+      totalRecords: totalCount || 0,
+      organizationRecords: orgCount || 0,
+      dateRangeRecords: dateRangeCounts
+    };
+  } catch (error) {
+    console.error('Error debugging call counts:', error);
+    return {
+      totalRecords: 0,
+      organizationRecords: 0,
+      dateRangeRecords: {}
+    };
+  }
+};
+
+/**
+ * Fetch call volume data for charting by date range
+ */
+export const getCallVolumeData = async (days: number = 30): Promise<CallVolumeData[]> => {
+  try {
+    const organizationId = await getCurrentUserOrganizationId();
+    
+    if (!organizationId) {
+      console.error('No organization found for user');
+      return [];
+    }
+
+    // Calculate date range
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(endDate.getDate() - days);
+
+    // Fetch call records within date range
+    const { data: calls, error: callsError } = await supabase
+      .from('call_records')
+      .select('start_timestamp, tour_scheduled_for')
+      .eq('organization_id', organizationId)
+      .gte('start_timestamp', startDate.toISOString())
+      .lte('start_timestamp', endDate.toISOString())
+      .order('start_timestamp', { ascending: true });
+
+    if (callsError) {
+      console.error('Error fetching call volume data:', callsError);
+      return [];
+    }
+
+    if (!calls || calls.length === 0) {
+      return [];
+    }
+
+    // Group calls by date
+    const dateMap = new Map<string, { calls: number; tours: number }>();
+    
+    // Initialize all dates in range with 0 values
+    for (let i = 0; i < days; i++) {
+      const date = new Date(startDate);
+      date.setDate(date.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      dateMap.set(dateStr, { calls: 0, tours: 0 });
+    }
+
+    // Count calls and tours for each date
+    calls.forEach(call => {
+      const callDate = new Date(call.start_timestamp).toISOString().split('T')[0];
+      const existing = dateMap.get(callDate) || { calls: 0, tours: 0 };
+      existing.calls++;
+      
+      // Count as tour if tour_scheduled_for is not null/empty
+      if (call.tour_scheduled_for && call.tour_scheduled_for.trim() !== '') {
+        existing.tours++;
+      }
+      
+      dateMap.set(callDate, existing);
+    });
+
+    // Convert to array format
+    const result: CallVolumeData[] = Array.from(dateMap.entries()).map(([date, data]) => ({
+      date,
+      calls: data.calls,
+      tours: data.tours
+    }));
+
+    return result.sort((a, b) => a.date.localeCompare(b.date));
+  } catch (error) {
+    console.error('Unexpected error fetching call volume data:', error);
+    return [];
   }
 };
 

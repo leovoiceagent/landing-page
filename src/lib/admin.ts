@@ -431,9 +431,9 @@ export const deleteProperty = async (id: string): Promise<{ success: boolean; er
 // USERS MANAGEMENT
 export const getUserProfiles = async (organizationId?: string): Promise<UserProfile[]> => {
   try {
-    // Try to use the view first (if it exists)
+    // Fetch user profiles with email column
     let query = supabase
-      .from('user_profiles_with_email')
+      .from('user_profiles')
       .select(`
         id,
         user_id,
@@ -451,58 +451,7 @@ export const getUserProfiles = async (organizationId?: string): Promise<UserProf
       query = query.eq('organization_id', organizationId);
     }
 
-    let { data, error } = await query;
-
-    // If the view doesn't exist or is_active column doesn't exist, fallback to user_profiles table
-    if (error) {
-      console.log('Falling back to user_profiles table...', error.message);
-      query = supabase
-        .from('user_profiles')
-        .select(`
-          id,
-          user_id,
-          organization_id,
-          first_name,
-          last_name,
-          created_at,
-          is_active,
-          organizations!inner(name)
-        `)
-        .order('created_at', { ascending: false });
-
-      if (organizationId) {
-        query = query.eq('organization_id', organizationId);
-      }
-
-      const result = await query;
-      data = result.data;
-      error = result.error;
-
-      // If still failing with is_active, try without it
-      if (error && error.message.includes('is_active')) {
-        console.log('is_active column not found, fetching without it...');
-        query = supabase
-          .from('user_profiles')
-          .select(`
-            id,
-            user_id,
-            organization_id,
-            first_name,
-            last_name,
-            created_at,
-            organizations!inner(name)
-          `)
-          .order('created_at', { ascending: false });
-
-        if (organizationId) {
-          query = query.eq('organization_id', organizationId);
-        }
-
-        const result2 = await query;
-        data = result2.data;
-        error = result2.error;
-      }
-    }
+    const { data: profiles, error } = await query;
 
     if (error) {
       console.error('Error fetching user profiles:', error);
@@ -510,14 +459,13 @@ export const getUserProfiles = async (organizationId?: string): Promise<UserProf
     }
 
     // Fetch admin status separately for each user
-    const profiles = data || [];
     const adminMap: Record<string, { is_active: boolean; admin_level: string }> = {};
     
     try {
       const { data: adminData } = await supabase
         .from('admin_users')
         .select('user_id, is_active, admin_level')
-        .in('user_id', profiles.map(p => p.user_id));
+        .in('user_id', profiles?.map(p => p.user_id) || []);
       
       if (adminData) {
         adminData.forEach(admin => {
@@ -531,11 +479,16 @@ export const getUserProfiles = async (organizationId?: string): Promise<UserProf
       console.log('Could not fetch admin data:', adminError);
     }
 
+    // Emails are now fetched directly in the query above
+    // No need for separate email fetching logic
+
+    console.log('Profiles with emails:', profiles);
+
     // Map the profiles
-    return profiles.map(profile => ({
+    return (profiles || []).map(profile => ({
       ...profile,
       is_active: profile.is_active ?? true, // Default to true if not set
-      email: profile.email || `user-${profile.user_id.substring(0, 8)}`, // Use email from view or placeholder
+      email: profile.email || `user-${profile.user_id.substring(0, 8)}`, // Use email from query result
       organization_name: profile.organizations?.name,
       is_admin: adminMap[profile.user_id]?.is_active || false,
       admin_level: adminMap[profile.user_id]?.admin_level || 'user',
