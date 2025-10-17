@@ -114,7 +114,17 @@ export const getUserProperties = async (): Promise<Property[]> => {
     // For each property, fetch call statistics
     const propertiesWithStats = await Promise.all(
       properties.map(async (property) => {
-        // Get call statistics
+        // Get accurate call count using count query
+        const { count: callCount, error: countError } = await supabase
+          .from('call_records')
+          .select('*', { count: 'exact', head: true })
+          .eq('property_id', property.id);
+
+        if (countError) {
+          console.error('Error fetching call count for property:', countError);
+        }
+
+        // Get call details for lead and conversion calculations
         const { data: calls, error: callsError } = await supabase
           .from('call_records')
           .select('call_successful, tour_scheduled_for')
@@ -124,13 +134,12 @@ export const getUserProperties = async (): Promise<Property[]> => {
           console.error('Error fetching call stats:', callsError);
         }
 
-        const callCount = calls?.length || 0;
         const leadCount = calls?.filter(c => c.tour_scheduled_for).length || 0;
         const conversionCount = calls?.filter(c => c.call_successful === true).length || 0;
 
         return {
           ...property,
-          call_count: callCount,
+          call_count: callCount || 0,
           lead_count: leadCount,
           conversion_count: conversionCount,
         };
