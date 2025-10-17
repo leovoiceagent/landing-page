@@ -270,7 +270,14 @@ const AppDashboard: React.FC = () => {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Properties Section */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-[#1E293B] mb-4">Properties (incl. key stats)</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-[#1E293B]">Properties (incl. key stats)</h3>
+                {!isLoadingData && (
+                  <div className="text-sm text-[#64748B]">
+                    {stats.total_calls.toLocaleString()} total calls
+                  </div>
+                )}
+              </div>
               
               {isLoadingData ? (
                 <div className="flex items-center justify-center py-8">
