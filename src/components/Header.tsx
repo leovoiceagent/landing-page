@@ -56,6 +56,10 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
               </Link>
             )}
             
+            <Link to="/roi-calculator" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
+              ROI Calculator
+            </Link>
+            
             {isHomePage ? (
               <a href="#faq" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
                 FAQ
@@ -144,6 +148,14 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
                   Testimonials
                 </Link>
               )}
+              
+              <Link 
+                to="/roi-calculator" 
+                className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2"
+                onClick={closeMobileMenu}
+              >
+                ROI Calculator
+              </Link>
               
               {isHomePage ? (
                 <a 
