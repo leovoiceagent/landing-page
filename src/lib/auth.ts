@@ -91,10 +91,12 @@ export const signUp = async ({ email, password, fullName }: SignUpData): Promise
       email: email.trim().toLowerCase(),
       password,
       options: {
-        // Store full name in user metadata as display_name
+        // Store full name in user metadata in multiple formats for compatibility
         data: {
           display_name: fullName.trim(),
-          full_name: fullName.trim(), // Backup field
+          full_name: fullName.trim(),
+          first_name: fullName.trim().split(' ')[0] || '',
+          last_name: fullName.trim().split(' ').slice(1).join(' ') || '',
         },
       },
     });
