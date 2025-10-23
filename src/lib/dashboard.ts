@@ -26,6 +26,9 @@ export interface CallRecord {
   call_successful: boolean | null;
   customer_first_name: string | null;
   customer_last_name: string | null;
+  customer_phone: string | null;
+  customer_email: string | null;
+  call_summary: string | null;
   tour_scheduled_for: string | null;
   created_at: string;
   property_name?: string;
@@ -179,6 +182,9 @@ export const getRecentCallRecords = async (limit: number = 10): Promise<CallReco
         call_successful,
         customer_first_name,
         customer_last_name,
+        customer_phone,
+        customer_email,
+        call_summary,
         tour_scheduled_for,
         created_at
       `)
