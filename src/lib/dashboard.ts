@@ -189,7 +189,7 @@ export const getRecentCallRecords = async (limit: number = 10): Promise<CallReco
         created_at
       `)
       .eq('organization_id', organizationId)
-      .order('start_timestamp', { ascending: false })
+      .order('created_at', { ascending: false })
       .limit(limit);
 
     if (error) {
