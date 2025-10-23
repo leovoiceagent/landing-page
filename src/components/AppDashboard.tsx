@@ -84,6 +84,16 @@ const AppDashboard: React.FC = () => {
                 <Home className="w-5 h-5" />
                 <span>Home</span>
               </Link>
+              
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="flex items-center space-x-2 px-4 py-2 text-[#64748B] hover:text-[#1E293B] transition-colors"
+                >
+                  <Shield className="w-5 h-5" />
+                  <span>Admin</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
