@@ -44,7 +44,7 @@ const AppDashboard: React.FC = () => {
         const [propertiesData, statsData, callRecordsData] = await Promise.all([
           getUserProperties(),
           getDashboardStats(),
-          getRecentCallRecords(10)
+          getRecentCallRecords(20)
         ]);
 
         setProperties(propertiesData);
@@ -250,7 +250,7 @@ const AppDashboard: React.FC = () => {
 
             {/* Recent Activity Section */}
             <div className="bg-white rounded-xl border border-gray-200 p-6 lg:col-span-2">
-              <h3 className="text-lg font-semibold text-[#1E293B] mb-4">Recent Activity</h3>
+              <h3 className="text-lg font-semibold text-[#1E293B] mb-4">Recent Activities</h3>
               
               {isLoadingData ? (
                 <div className="flex items-center justify-center py-8">
