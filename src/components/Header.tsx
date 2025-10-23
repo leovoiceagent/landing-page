@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Phone, Menu, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Phone, Menu, X, User, LogOut, Home } from 'lucide-react';
 // import { openVoiceChat } from '../lib/chatWidget';
 import LeoLogo from '../assets/Leo_logo_round.png';
+import { getCurrentUser, signOut } from '../lib/auth';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface HeaderProps {
   onStartVoiceDemo?: () => void;
@@ -10,8 +12,28 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Check authentication status
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [location.pathname]); // Re-check when route changes
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -19,6 +41,24 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setUser(null);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
+  const getDisplayName = () => {
+    if (!user) return '';
+    return user.user_metadata?.display_name || 
+           user.user_metadata?.full_name || 
+           user.email?.split('@')[0] || 
+           'User';
   };
 
   return (
@@ -70,9 +110,31 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
               </Link>
             )}
             
-            <Link to="/login" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-              Login
-            </Link>
+            {/* Show different options based on auth status */}
+            {isLoading ? (
+              <div className="w-16 h-8 bg-gray-200 rounded animate-pulse"></div>
+            ) : user ? (
+              <div className="flex items-center space-x-4">
+                <Link to="/app" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
+                  Dashboard
+                </Link>
+                <div className="flex items-center space-x-2 px-3 py-1 bg-[#F5F3EF] rounded-lg">
+                  <User className="w-4 h-4 text-[#64748B]" />
+                  <span className="text-sm text-[#1E293B] font-medium">{getDisplayName()}</span>
+                </div>
+                <button
+                  onClick={handleSignOut}
+                  className="text-[#64748B] hover:text-red-600 transition-colors flex items-center space-x-1"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            ) : (
+              <Link to="/login" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
+                Login
+              </Link>
+            )}
           </nav>
 
           {/* Desktop CTA Button */}
@@ -175,13 +237,42 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
                 </Link>
               )}
               
-              <Link 
-                to="/login" 
-                className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2 font-semibold"
-                onClick={closeMobileMenu}
-              >
-                Login
-              </Link>
+              {/* Show different options based on auth status in mobile menu */}
+              {isLoading ? (
+                <div className="w-16 h-6 bg-gray-200 rounded animate-pulse"></div>
+              ) : user ? (
+                <>
+                  <Link 
+                    to="/app" 
+                    className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2 font-semibold"
+                    onClick={closeMobileMenu}
+                  >
+                    Dashboard
+                  </Link>
+                  <div className="flex items-center space-x-2 px-3 py-2 bg-[#F5F3EF] rounded-lg">
+                    <User className="w-4 h-4 text-[#64748B]" />
+                    <span className="text-sm text-[#1E293B] font-medium">{getDisplayName()}</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      closeMobileMenu();
+                    }}
+                    className="text-[#64748B] hover:text-red-600 transition-colors py-2 flex items-center space-x-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Sign Out</span>
+                  </button>
+                </>
+              ) : (
+                <Link 
+                  to="/login" 
+                  className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2 font-semibold"
+                  onClick={closeMobileMenu}
+                >
+                  Login
+                </Link>
+              )}
             </nav>
           </div>
         )}
