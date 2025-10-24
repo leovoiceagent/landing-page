@@ -118,7 +118,7 @@ const QRWaitlistPage: React.FC = () => {
             </h1>
             
             <p className="text-xl text-[#64748B] max-w-2xl mx-auto mb-8">
-              Be the first to experience AI-powered leasing calls that never miss an opportunity.
+              Be the first to experience AI leasing calls to never miss an opportunity.
             </p>
           </div>
 
