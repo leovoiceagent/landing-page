@@ -16,6 +16,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AppDashboard from './components/AppDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import ROICalculator from './components/ROICalculator';
+import QRWaitlistPage from './components/QRWaitlistPage';
 import { RETELL_CONFIG } from './config/retell';
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/roi-calculator" element={<ROICalculator />} />
+          <Route path="/waitlist" element={<QRWaitlistPage />} />
           <Route path="/app" element={
             <ProtectedRoute>
               <AppDashboard />
