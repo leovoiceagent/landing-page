@@ -84,6 +84,7 @@ const QRWaitlistPage: React.FC = () => {
       // Redirect to main site after 2 seconds
       setTimeout(() => {
         navigate('/', { replace: true });
+        window.scrollTo(0, 0);
       }, 2000);
 
     } catch (error) {
@@ -99,43 +100,12 @@ const QRWaitlistPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F3EF]">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <img 
-                src={LeoLogo}
-                alt="Leo AI Voice Agent Logo" 
-                className="w-10 h-10 rounded-full"
-              />
-              <h1 className="text-xl font-bold text-[#1E293B]">Leo Voice Agent</h1>
-            </div>
-            
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="/#how-it-works" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                How It Works
-              </a>
-              <a href="/#testimonials" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                Testimonials
-              </a>
-              <a href="/roi-calculator" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                ROI Calculator
-              </a>
-              <a href="/#faq" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                FAQ
-              </a>
-            </nav>
-          </div>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center">
           {/* Hero Section */}
           <div className="mb-12">
-            <div className="w-24 h-24 bg-[#F7EF00] rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6">
               <img 
                 src={LeoLogo}
                 alt="Leo Logo" 

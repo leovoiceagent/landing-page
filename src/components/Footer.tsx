@@ -1,39 +1,10 @@
 import React from 'react';
-import { useState } from 'react';
-import { Phone } from 'lucide-react';
 import LeoLogo from '../assets/Leo_logo_round.png';
-import WaitlistModal from './WaitlistModal';
 
 const Footer: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleJoinWaitlist = () => {
-    setIsModalOpen(true);
-  };
-
   return (
     <>
       <footer className="bg-white">
-      {/* CTA Strip */}
-      <div className="bg-[#1F2937] text-white py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to capture every leasing lead?
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Try Leo for free — no setup headaches, no missed calls.
-          </p>
-          <button 
-            onClick={handleJoinWaitlist}
-            className="bg-[#F7EF00] text-[#1E293B] px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-[#F7EF00]/90 transition-all duration-300 hover:scale-105 inline-flex items-center space-x-2 group"
-          >
-            <Phone className="w-5 h-5" />
-            <span>Join waitlist</span>
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </button>
-        </div>
-      </div>
-
       {/* Footer Links */}
       <div className="bg-[#F9FAFB] py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -88,11 +59,6 @@ const Footer: React.FC = () => {
         </div>
       </div>
       </footer>
-
-      <WaitlistModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-      />
     </>
   );
 };
