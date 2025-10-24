@@ -137,7 +137,7 @@ const QRWaitlistPage: React.FC = () => {
             ) : (
               <>
                 <p className="text-[#64748B] mb-6">
-                  Be the first to know when Leo is ready to handle your leasing calls 24/7.
+                  Join our waitlist to get notified when Leo launches.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
