@@ -181,14 +181,6 @@ const Testimonials: React.FC = () => {
             ))}
           </div>
         </div>
-
-        {/* CTA after carousel */}
-        <div className="text-center mt-16">
-          <button onClick={() => alert('Chat widget temporarily disabled')} className="bg-[#F7EF00] text-[#1E293B] px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-[#F7EF00]/90 transition-all duration-300 hover:scale-105 hover:shadow-lg inline-flex items-center space-x-2 group">
-            <span>Let Leo take your next call</span>
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </button>
-        </div>
       </div>
     </section>
   );

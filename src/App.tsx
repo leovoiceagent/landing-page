@@ -54,7 +54,7 @@ function AppContent() {
             />
             <Problem />
             <Benefits />
-            <HowItWorks />
+            <HowItWorks onStartVoiceDemo={handleStartVoiceDemo} />
             <Testimonials />
             <FAQ />
           </main>
