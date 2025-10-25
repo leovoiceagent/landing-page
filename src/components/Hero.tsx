@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Phone } from 'lucide-react';
+import { Calculator, Calendar, Phone } from 'lucide-react';
 import LeoLogo from '../assets/Leo_logo_round.png';
 import LaurelLeft from '../assets/Laurel_left.png';
 import LaurelRight from '../assets/Laurel_right.png';
@@ -8,9 +8,10 @@ import SpeechBubble from '../assets/Speech_bubble.png';
 
 interface HeroProps {
   onStartVoiceDemo?: () => void;
+  onOpenROICalculator?: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onStartVoiceDemo }) => {
+const Hero: React.FC<HeroProps> = ({ onStartVoiceDemo, onOpenROICalculator }) => {
 
   return (
     <section className="pt-12 pb-20 px-4 sm:px-6 lg:px-8">
@@ -22,21 +23,25 @@ const Hero: React.FC<HeroProps> = ({ onStartVoiceDemo }) => {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E293B] leading-tight">
                 Missing 60% of
                 <br />
-                <span className="text-[#1E293B]">Your Leasing Calls?</span>
+                <span className="text-[#1E293B]">Your Apartment Leases?</span>
               </h1>
               
               <p className="text-xl text-[#64748B] leading-relaxed max-w-lg mx-auto">
-                Every unanswered call is $15K+ walking out the door. Leo answers every call, captures leads, and books tours — 24/7.
+                $15K+ lost per missed call. Leo captures them all — 24/7.
               </p>
 
               <div className="space-y-4 flex flex-col items-center">
-                <button onClick={onStartVoiceDemo || (() => alert('Voice demo not available'))} className="bg-[#F7EF00] text-[#1E293B] px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-[#F7EF00]/90 transition-all duration-300 hover:scale-105 hover:shadow-lg inline-flex items-center space-x-2 group">
-                  <span>Let Leo take your next call</span>
+                <button
+                  onClick={onOpenROICalculator}
+                  className="bg-[#F7EF00] text-[#1E293B] px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-[#F7EF00]/90 transition-all duration-300 hover:scale-105 hover:shadow-lg inline-flex items-center space-x-2 group"
+                >
+                  <Calculator className="w-5 h-5" />
+                  <span>See What You're Losing</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </button>
 
                 <p className="text-[#64748B] font-medium">
-                  Turn missed calls into signed leases
+                  Calculate your revenue loss in 60 seconds
                 </p>
               </div>
 
