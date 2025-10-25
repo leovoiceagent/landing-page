@@ -20,13 +20,13 @@ const Hero: React.FC<HeroProps> = ({ onStartVoiceDemo }) => {
           <div className="space-y-8 flex flex-col items-center text-center">
             <div className="space-y-6 flex flex-col items-center">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E293B] leading-tight">
-                Never miss
+                Missing 60% of
                 <br />
-                <span className="text-[#1E293B]">a leasing call</span>
+                <span className="text-[#1E293B]">Your Leasing Calls?</span>
               </h1>
               
               <p className="text-xl text-[#64748B] leading-relaxed max-w-lg mx-auto">
-                Leo answers calls, captures leads, and books tours — even after hours.
+                Every unanswered call is $15K+ walking out the door. Leo answers every call, captures leads, and books tours — 24/7.
               </p>
 
               <div className="space-y-4 flex flex-col items-center">
