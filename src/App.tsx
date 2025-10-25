@@ -16,11 +16,13 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AppDashboard from './components/AppDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import ROICalculator from './components/ROICalculator';
+import ROICalculatorModal from './components/ROICalculatorModal';
 import QRWaitlistPage from './components/QRWaitlistPage';
 import { RETELL_CONFIG } from './config/retell';
 
 function AppContent() {
   const [showVoiceDemo, setShowVoiceDemo] = useState(false);
+  const [showROICalculator, setShowROICalculator] = useState(false);
   const location = useLocation();
 
   const handleStartVoiceDemo = () => {
@@ -31,13 +33,24 @@ function AppContent() {
     setShowVoiceDemo(false);
   };
 
+  const handleOpenROICalculator = () => {
+    setShowROICalculator(true);
+  };
+
+  const handleCloseROICalculator = () => {
+    setShowROICalculator(false);
+  };
+
   return (
     <div className="min-h-screen bg-[#F5F3EF] antialiased">
       <Header onStartVoiceDemo={handleStartVoiceDemo} />
       <Routes>
         <Route path="/" element={
           <main>
-            <Hero onStartVoiceDemo={handleStartVoiceDemo} />
+            <Hero
+              onStartVoiceDemo={handleStartVoiceDemo}
+              onOpenROICalculator={handleOpenROICalculator}
+            />
             <Benefits />
             <HowItWorks />
             <Testimonials onStartVoiceDemo={handleStartVoiceDemo} />
@@ -70,6 +83,11 @@ function AppContent() {
           agentName={RETELL_CONFIG.AGENT_NAME}
           onClose={handleCloseVoiceDemo}
         />
+      )}
+
+      {/* ROI Calculator Modal */}
+      {showROICalculator && (
+        <ROICalculatorModal onClose={handleCloseROICalculator} />
       )}
     </div>
   );
