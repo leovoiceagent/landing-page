@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import Problem from './components/Problem';
 import Benefits from './components/Benefits';
 import HowItWorks from './components/HowItWorks';
 import Testimonials from './components/Testimonials';
@@ -51,9 +52,10 @@ function AppContent() {
               onStartVoiceDemo={handleStartVoiceDemo}
               onOpenROICalculator={handleOpenROICalculator}
             />
+            <Problem />
             <Benefits />
             <HowItWorks />
-            <Testimonials onStartVoiceDemo={handleStartVoiceDemo} />
+            <Testimonials />
             <FAQ />
           </main>
         } />
