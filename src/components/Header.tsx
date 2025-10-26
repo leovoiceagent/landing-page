@@ -116,7 +116,7 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
               onClick={() => handleHashNavigation('#how-it-works')}
               className="text-[#1E293B] hover:text-[#38BDF8] transition-colors"
             >
-              How It Works
+              How Leo Works
             </button>
 
             <button
@@ -212,7 +212,7 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
                 }}
                 className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2 text-left"
               >
-                How It Works
+                How Leo Works
               </button>
 
               <button

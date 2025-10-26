@@ -94,8 +94,8 @@ const HowItWorks: React.FC<HowItWorksProps> = ({ onStartVoiceDemo }) => {
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-bold text-[#1E293B] mb-3 flex items-center justify-center space-x-2">
-                    <span className="w-6 h-6 bg-iconbg text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  <h3 className="text-lg font-bold text-[#1E293B] mb-3 flex items-start justify-center space-x-2">
+                    <span className="w-6 h-6 bg-iconbg text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
                       {index + 1}
                     </span>
                     <span>{step.title}</span>
@@ -128,8 +128,8 @@ const HowItWorks: React.FC<HowItWorksProps> = ({ onStartVoiceDemo }) => {
               </div>
 
               <div className="flex-1">
-                <h3 className="text-lg font-bold text-[#1E293B] mb-2 flex items-center space-x-2">
-                  <span className="w-6 h-6 bg-iconbg text-white rounded-full flex items-center justify-center text-sm font-bold">
+                <h3 className="text-lg font-bold text-[#1E293B] mb-2 flex items-start space-x-2">
+                  <span className="w-6 h-6 bg-iconbg text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
                     {index + 1}
                   </span>
                   <span>{step.title}</span>

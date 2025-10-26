@@ -61,7 +61,7 @@ const Footer: React.FC<FooterProps> = ({ showCTA = true }) => {
             <div>
               <h4 className="font-semibold text-[#1E293B] mb-4">Product</h4>
               <ul className="space-y-3 text-[#64748B]">
-                <li><a href="#how-it-works" className="hover:text-[#38BDF8] transition-colors">How it Works</a></li>
+                <li><a href="#how-it-works" className="hover:text-[#38BDF8] transition-colors">How Leo Works</a></li>
                 <li><a href="#testimonials" className="hover:text-[#38BDF8] transition-colors">Testimonials</a></li>
                 <li><a href="#faq" className="hover:text-[#38BDF8] transition-colors">FAQ</a></li>
               </ul>
