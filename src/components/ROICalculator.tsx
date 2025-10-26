@@ -283,30 +283,30 @@ const ROICalculator: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <p className="text-blue-100">
-                    Monthly After-Hours Calls: <span className="font-bold text-white">{formatNumber(results.monthlyCalls)}</span>
+                    Monthly After-Hours Calls: <span className="font-bold text-white">{Math.round(results.monthlyCalls)}</span>
                   </p>
                   <p className="text-blue-100">
-                    Qualified Prospects Lost: <span className="font-bold text-white">{formatNumber(results.qualifiedLeads)}</span>
+                    Qualified Prospects Lost: <span className="font-bold text-white">{Math.round(results.qualifiedLeads)}</span>
                   </p>
                   <p className="text-blue-100">
-                    Tours Lost: <span className="font-bold text-white">{formatNumber(results.toursLost)}</span>
+                    Tours Lost: <span className="font-bold text-white">{Math.round(results.toursLost)}</span>
                   </p>
                 </div>
                 <div className="space-y-3">
                   <p className="text-blue-100">
-                    Leases Lost: <span className="font-bold text-white">{formatNumber(results.leasesLost)}</span>
+                    Lost Leases Per Month: <span className="font-bold text-white">{formatNumber(results.leasesLost)}</span>
                   </p>
                   <p className="text-blue-100">
-                    Monthly Revenue Loss: <span className="font-bold text-white">{formatCurrency(results.monthlyLoss)}</span>
+                    Monthly Recurring Revenue Lost: <span className="font-bold text-white">{formatCurrency(results.monthlyLoss)}</span>
                   </p>
                   <p className="text-blue-100">
-                    Annual Revenue Loss: <span className="font-bold text-white">{formatCurrency(results.annualLoss)}</span>
+                    Annual Impact: <span className="font-bold text-white">{formatCurrency(results.annualLoss)}</span>
                   </p>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-blue-300">
                 <p className="text-blue-100 text-center">
-                  Lifetime Value Loss: <span className="font-bold text-white text-xl">{formatCurrency(results.lifetimeLoss)}</span>
+                  Total Lifetime Value Lost: <span className="font-bold text-white text-xl">{formatCurrency(results.lifetimeLoss)}</span>
                 </p>
               </div>
             </div>
