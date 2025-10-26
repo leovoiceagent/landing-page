@@ -63,7 +63,6 @@ const Footer: React.FC<FooterProps> = ({ showCTA = true }) => {
               <ul className="space-y-3 text-[#64748B]">
                 <li><a href="#how-it-works" className="hover:text-[#38BDF8] transition-colors">How it Works</a></li>
                 <li><a href="#testimonials" className="hover:text-[#38BDF8] transition-colors">Testimonials</a></li>
-                <li><a href="#" className="hover:text-[#38BDF8] transition-colors">Pricing</a></li>
                 <li><a href="#faq" className="hover:text-[#38BDF8] transition-colors">FAQ</a></li>
               </ul>
             </div>
@@ -72,10 +71,7 @@ const Footer: React.FC<FooterProps> = ({ showCTA = true }) => {
             <div>
               <h4 className="font-semibold text-[#1E293B] mb-4">Company</h4>
               <ul className="space-y-3 text-[#64748B]">
-                <li><a href="#" className="hover:text-[#38BDF8] transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-[#38BDF8] transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-[#38BDF8] transition-colors">Privacy Policy →</a></li>
-                <li><a href="#" className="hover:text-[#38BDF8] transition-colors">Terms of Use →</a></li>
+                <li><a href="mailto:leovoiceagent@gmail.com" className="hover:text-[#38BDF8] transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>

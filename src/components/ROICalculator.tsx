@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calculator, RotateCcw } from 'lucide-react';
 
 interface FormData {
@@ -34,6 +34,11 @@ const ROICalculator: React.FC = () => {
 
   const [results, setResults] = useState<Results | null>(null);
   const [showResults, setShowResults] = useState(false);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     const numValue = parseFloat(value) || 0;

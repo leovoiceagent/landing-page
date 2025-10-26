@@ -18,6 +18,26 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
   const [user, setUser] = useState<SupabaseUser | null | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Helper function to handle navigation with hash scrolling
+  const handleHashNavigation = (hash: string) => {
+    if (isHomePage) {
+      // Already on home page, just scroll
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Navigate to home first, then scroll after a brief delay
+      navigate('/');
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  };
+
   // Check authentication status
   useEffect(() => {
     const checkAuth = async () => {
@@ -65,10 +85,19 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
     <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-            <img 
+          <Link
+            to="/"
+            className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+            onClick={(e) => {
+              if (isHomePage) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+          >
+            <img
               src={LeoLogo}
-              alt="Leo AI Voice Agent Logo" 
+              alt="Leo AI Voice Agent Logo"
               className="w-10 h-10 rounded-full"
             />
             <h1 className="text-xl font-bold text-[#1E293B]">Leo Voice Agent</h1>
@@ -76,40 +105,31 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {isHomePage ? (
-              <a href="#how-it-works" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                How It Works
-              </a>
-            ) : (
-              <Link to="/#how-it-works" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                How It Works
-              </Link>
-            )}
-            
-            {isHomePage ? (
-              <a href="#testimonials" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                Testimonials
-              </a>
-            ) : (
-              <Link to="/#testimonials" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                Testimonials
-              </Link>
-            )}
-            
+            <button
+              onClick={() => handleHashNavigation('#benefits')}
+              className="text-[#1E293B] hover:text-[#38BDF8] transition-colors"
+            >
+              Benefits
+            </button>
+
+            <button
+              onClick={() => handleHashNavigation('#how-it-works')}
+              className="text-[#1E293B] hover:text-[#38BDF8] transition-colors"
+            >
+              How It Works
+            </button>
+
+            <button
+              onClick={() => handleHashNavigation('#faq')}
+              className="text-[#1E293B] hover:text-[#38BDF8] transition-colors"
+            >
+              FAQ
+            </button>
+
             <Link to="/roi-calculator" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-              ROI Calculator
+              Impact Calculator
             </Link>
-            
-            {isHomePage ? (
-              <a href="#faq" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                FAQ
-              </a>
-            ) : (
-              <Link to="/#faq" className="text-[#1E293B] hover:text-[#38BDF8] transition-colors">
-                FAQ
-              </Link>
-            )}
-            
+
             {/* Show different options based on auth status */}
             {isLoading ? (
               <div className="w-16 h-8 bg-gray-200 rounded animate-pulse"></div>
@@ -175,67 +195,43 @@ const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
             <nav className="flex flex-col space-y-4 pt-4">
-              {isHomePage ? (
-                <a 
-                  href="#how-it-works" 
-                  className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2"
-                  onClick={closeMobileMenu}
-                >
-                  How It Works
-                </a>
-              ) : (
-                <Link 
-                  to="/#how-it-works" 
-                  className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2"
-                  onClick={closeMobileMenu}
-                >
-                  How It Works
-                </Link>
-              )}
-              
-              {isHomePage ? (
-                <a 
-                  href="#testimonials" 
-                  className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2"
-                  onClick={closeMobileMenu}
-                >
-                  Testimonials
-                </a>
-              ) : (
-                <Link 
-                  to="/#testimonials" 
-                  className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2"
-                  onClick={closeMobileMenu}
-                >
-                  Testimonials
-                </Link>
-              )}
-              
-              <Link 
-                to="/roi-calculator" 
+              <button
+                onClick={() => {
+                  handleHashNavigation('#benefits');
+                  closeMobileMenu();
+                }}
+                className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2 text-left"
+              >
+                Benefits
+              </button>
+
+              <button
+                onClick={() => {
+                  handleHashNavigation('#how-it-works');
+                  closeMobileMenu();
+                }}
+                className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2 text-left"
+              >
+                How It Works
+              </button>
+
+              <button
+                onClick={() => {
+                  handleHashNavigation('#faq');
+                  closeMobileMenu();
+                }}
+                className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2 text-left"
+              >
+                FAQ
+              </button>
+
+              <Link
+                to="/roi-calculator"
                 className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2"
                 onClick={closeMobileMenu}
               >
-                ROI Calculator
+                Impact Calculator
               </Link>
-              
-              {isHomePage ? (
-                <a 
-                  href="#faq" 
-                  className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2"
-                  onClick={closeMobileMenu}
-                >
-                  FAQ
-                </a>
-              ) : (
-                <Link 
-                  to="/#faq" 
-                  className="text-[#1E293B] hover:text-[#38BDF8] transition-colors py-2"
-                  onClick={closeMobileMenu}
-                >
-                  FAQ
-                </Link>
-              )}
               
               {/* Show different options based on auth status in mobile menu */}
               {isLoading ? (

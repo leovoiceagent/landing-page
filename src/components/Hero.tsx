@@ -12,6 +12,14 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ onStartVoiceDemo, onOpenROICalculator }) => {
+  // Calculate move-in date: first day of month, 2 months from now
+  const getMoveInDate = () => {
+    const today = new Date();
+    const futureDate = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+    const month = futureDate.getMonth() + 1;
+    const year = futureDate.getFullYear().toString().slice(-2);
+    return `${month}/1/${year}`;
+  };
 
   return (
     <section className="pt-12 pb-20 px-4 sm:px-6 lg:px-8">
@@ -101,7 +109,7 @@ const Hero: React.FC<HeroProps> = ({ onStartVoiceDemo, onOpenROICalculator }) =>
                 <p className="font-medium">Michael R.</p>
                 <p className="text-gray-300">(555) 723-9481</p>
                 <p className="text-gray-300">michael@email.com</p>
-                <p className="text-gray-300">Move-in: 10/8/25</p>
+                <p className="text-gray-300">Move-in: {getMoveInDate()}</p>
               </div>
             </div>
           </div>
